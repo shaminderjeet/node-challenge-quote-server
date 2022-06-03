@@ -4,6 +4,7 @@ const { response } = require("express");
 
 //load the 'express' module which makes writing webservers easy
 const express = require("express");
+const fs = require("fs")
 const app = express();
 
 //load the quotes JSON
@@ -18,6 +19,18 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
+app.get("/quotes",function(request,response){
+  response.send(fs.readFileSync("quotes.json").toString())
+})
+app.get("/quotes/random",function(request,response){
+  response.send(JSON.stringify(pickFromArray(quotes)))
+})
+app.get("/quotes/search",function(req,res){
+  const filteredQuotes=quotes.filter(element=>{
+    return element.quote.toLowerCase().includes(req.query.term.toLowerCase())||element.author.toLowerCase().includes(req.query.term.toLowerCase())
+  })
+  res.send(filteredQuotes)
+})
 
 //...END OF YOUR CODE
 
