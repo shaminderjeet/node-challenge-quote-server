@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "nodemon":"*"
+    "nodemon":"*",
+    "lodash":"*"
   },
   "license": "MIT"
 }

@@ -4,8 +4,10 @@ const { response } = require("express");
 
 //load the 'express' module which makes writing webservers easy
 const express = require("express");
-const fs = require("fs")
+const fs = require("fs");
+const { reset } = require("nodemon/lib/rules");
 const app = express();
+const lodash = require('lodash');
 
 //load the quotes JSON
 const quotes = require("./quotes.json");
@@ -23,14 +25,21 @@ app.get("/quotes",function(request,response){
   response.send(fs.readFileSync("quotes.json").toString())
 })
 app.get("/quotes/random",function(request,response){
-  response.send(JSON.stringify(pickFromArray(quotes)))
+  //response.send(JSON.stringify(pickFromArray(quotes)))
+  response.send(lodash.sample(quotes))
 })
 app.get("/quotes/search",function(req,res){
+
   const filteredQuotes=quotes.filter(element=>{
     return element.quote.toLowerCase().includes(req.query.term.toLowerCase())||element.author.toLowerCase().includes(req.query.term.toLowerCase())
   })
-  res.send(filteredQuotes)
+  if(filteredQuotes.length==0){
+    res.send("Try Something New ")
+  }
+ else{ res.send(filteredQuotes)
+ }
 })
+
 
 //...END OF YOUR CODE
 
